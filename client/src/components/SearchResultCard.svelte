@@ -1,26 +1,52 @@
 <script>
-  import SearchResults from "../routes/SearchResults.svelte";
+  export let bus;
+  export let source;
+  export let destination;
+
+  function convertTime(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = Math.round(minutes % 60);
+
+    return `${hours} hours and ${remainingMinutes} minutes`;
+  }
+
+  function converHours(minutes) {
+    const days = parseInt((Math.floor(minutes / 1440)).toFixed(0));
+    const remainingMinutes = Math.round(minutes % 60).toLocaleString("en-US", {
+      minimumIntegerDigits: 2,
+    });
+
+    if (days > 0) {
+      const hours = Math.floor((minutes - days * 1440) / 60);
+      return `${hours}:${remainingMinutes} + ${days}day(s)`;
+    }
+    const hours = Math.floor(minutes / 60);
+    return `${hours}:${remainingMinutes}`;
+  }
 </script>
 
 <div class="card-container">
   <div class="flex jcsb">
-    <h2 class="compant-name">SearchResults.companyName</h2>
-    <h2 class="fare">$100</h2>
+    <h2 class="compant-name">{bus.companyName}</h2>
   </div>
   <div class="place-container flex aic jcsb">
     <div class="source-container">
-      <h3 class="source-place place">SearchResults.source</h3>
+      <h3 class="source-place place">{source}</h3>
       <h6>Source</h6>
-      <h4 class="source-time time">Source Time</h4>
+      <h4 class="source-time time">{converHours(bus.sourceTime)}</h4>
     </div>
     <div>
-      <h4 class="time-container">SearchResults.journeyTime</h4>
-      <h4 class="distance">0km</h4>
+      <h4 class="time-container">{convertTime(bus.journeyTime)}</h4>
+      <h4 class="distance">{bus.distance} km</h4>
     </div>
     <div class="destination-container">
-      <h3 class="destination-place place">SearchResults.destination</h3>
+      <h3 class="destination-place place">{destination}</h3>
       <h6>Destination</h6>
-      <h4 class="destination-time time">Dest time</h4>
+      <h4 class="destination-time time">{converHours(bus.destinationTime)}</h4>
+    </div>
+    <div class="booking">
+      <h2 class="fare">${bus.totalFare}</h2>
+      <button type="button" class="book-btn">BOOK</button>
     </div>
   </div>
 </div>
@@ -36,7 +62,14 @@
   }
   .place,
   .time,
-  .distance {
+  .distance,
+  .book-btn {
     margin-top: 20px;
+  }
+  .book-btn {
+    background-color: rgb(69, 0, 134);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 5px;
   }
 </style>

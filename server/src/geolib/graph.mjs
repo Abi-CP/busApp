@@ -1,6 +1,6 @@
-// graph.js
+// graph.mjs
 
-const geolib = require('geolib');
+import geolib from 'geolib'
 
 class Graph {
   constructor() {
@@ -77,31 +77,21 @@ Object.entries(tamilNaduDistricts).forEach(([district, coordinates]) => {
 export function findDistanceAndTime(source, destination, sourceTime) {
   const distance = districtsGraph.calculateDistance(source, destination)
   const journeyTime = districtsGraph.calculateTravelTime(distance)
-  const destinationTime = calculateDestinationTime(sourceTime, journeyTime)
+  // const destinationTime = calculateDestinationTime(sourceTime, journeyTime)
   if (distance !== null && sourceTime !== null) {
     // const formattedJourneyTime = convertTime(time)
     // const FormattedDestinationTime = convertTime(destinationTime)
-    return [source, destination, parseFloat(distance.toFixed(2)), parseFloat(journeyTime.toFixed(0)), parseFloat(sourceTime.toFixed(0)), parseFloat(destinationTime.toFixed(0))]
+    return [
+      parseFloat(distance.toFixed(2)),
+      parseFloat(journeyTime.toFixed(0))
+      // parseFloat(destinationTime.toFixed(0)),
+    ]
   } else {
     return null
   }
 }
 
-function calculateDestinationTime(sourceTime, journeyTime) {
-  if (sourceTime + journeyTime < 1440) {
-    return sourceTime + journeyTime
-  } else if (sourceTime + journeyTime > 2880) {
-    return sourceTime + journeyTime - 2880
-  } else {
-    return sourceTime + journeyTime - 1440
-  }
-}
-// function convertTime(minutes) {
-//   const hours = Math.floor(minutes / 60)
-//   const remainingMinutes = Math.round(minutes % 60)
 
-//   return `${hours} hours and ${remainingMinutes} minutes`
-// }
 
 // // Example usage:
 // const resultChennaiToKancheepuram = findDistanceAndTime('Chennai', 'Kancheepuram', 240)
