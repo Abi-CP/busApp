@@ -1,137 +1,81 @@
+<!-- SearchBox.svelte -->
+
 <script>
-// @ts-nocheck
+  import { navigate } from "svelte-routing";
+  import SourceInput from "./SourceInput.svelte";
+  import DestinationInput from "./DestinationInput.svelte";
+  import JourneyDate from "./JourneyDate.svelte";
+  import { searchData } from "../js/stores";
 
-  function setNextFocus(event) {
-    const inputs = document.querySelectorAll(".input-field");
-    const currentField = event.target;
-    const currentIndex = Array.from(inputs).indexOf(currentField);
+  let sourceInputValue = "";
+  let destinationInputValue = "";
+  let dateInput = new Date().toISOString().split('T')[0];
 
-    if (
-      event.key === "Enter" &&
-      currentIndex !== -1 &&
-      currentIndex < inputs.length - 1
-    ) {
-      inputs[currentIndex + 1].focus();
+  const submitValue = async () => {
+    if (sourceInputValue && destinationInputValue) {
+      const apiUrl = "http://localhost:3001/api/search";
+      const requestData = {
+        source: sourceInputValue,
+        destination: destinationInputValue,
+        date: dateInput,
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("API response:", data);
+
+          // Reset inputs after successful API call
+          resetInputs();
+          // Update the store with the received data
+          searchData.set(data);
+          console.log("searchData updated:", $searchData);
+          // Navigate to searchResults.svelte
+          navigate("/search-results");
+        } else {
+          console.error("API request failed:", response.statusText);
+          alert("API request failed");
+        }
+      } catch (error) {
+        console.error("Error during API request:", error);
+        alert("Error during API request");
+      }
+    } else {
+      alert("Enter Valid Source and Destination!");
     }
-  }
+  };
 
-  let today = new Date().toISOString().split("T")[0];
-  let nextThreeMonths = new Date();
-  nextThreeMonths.setMonth(nextThreeMonths.getMonth() + 3);
-  nextThreeMonths = nextThreeMonths.toISOString().split("T")[0];
+  const resetInputs = () => {
+    sourceInputValue = "";
+    destinationInputValue = "";
+    dateInput = "yyyy-MM-dd";
+  };
 
-  function handleSearchClick() {
-    const sourceValue = document.getElementById("source").value;
-    const destinationValue = document.getElementById("destination").value;
-    const dateValue = document.getElementById("date").value;
-
-    console.log("From:", sourceValue);
-    console.log("To:", destinationValue);
-    console.log("Date:", dateValue);
-  }
+  const pressedSearch = (e) => {
+    if (e.key == "Enter") {
+      submitValue();
+    }
+  };
 </script>
 
-<div class="search-box flex">
-  <div class="input-container flex">
-    <label for="source" class="input-label">From</label>
+<form autocomplete="off" on:submit|preventDefault={submitValue}>
+  <div class="search-box flex">
+    <SourceInput bind:sourceInputValue />
+    <DestinationInput bind:destinationInputValue />
+    <JourneyDate bind:dateInput />
     <input
-      type="text"
-      id="source"
-      class="input-field"
-      placeholder="Enter source location"
-      required
-      on:keydown={setNextFocus}
+      on:keydown={pressedSearch}
+      class="submit-btn"
+      type="submit"
+      value="Search"
     />
   </div>
-
-  <div class="input-container flex">
-    <label for="destination" class="input-label">To</label>
-    <input
-      type="text"
-      id="destination"
-      class="input-field"
-      placeholder="Enter destination location"
-      required
-      on:keydown={setNextFocus}
-    />
-  </div>
-
-  <div class="input-container flex">
-    <label for="date" class="input-label">Date</label>
-    <input
-      type="date"
-      id="date"
-      class="input-field date"
-      placeholder="Select date"
-      required
-      on:keydown={setNextFocus}
-      min={today}
-      max={nextThreeMonths}
-    />
-  </div>
-
-  <div class="input-container search clickable">
-    <button type="button" on:click={handleSearchClick}>Search</button>
-  </div>
-</div>
-
-<style>
-  .search-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 70vw;
-    height: 10vh;
-    border: 1px solid #eee;
-    border-radius: 25px;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px;
-    background-color: whitesmoke;
-  }
-
-  .input-container {
-    flex: 1;
-    padding: 0 10px;
-  }
-
-  .input-label {
-    display: inline;
-    padding: 0 1rem;
-    margin-bottom: 5px;
-    font-size: 1rem;
-    color: #333;
-  }
-
-  .input-field {
-    height: 100%;
-    width: 100%;
-    font-size: 1rem;
-    border: none;
-    outline: none;
-    background: none;
-  }
-
-  .search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 10vw;
-    padding: 0 15px;
-    border: none;
-    outline: none;
-    background-color: #4caf50;
-    cursor: pointer;
-    border-radius: 0 25px 25px 0;
-  }
-
-  .search button {
-    height: 100%;
-    width: 100%;
-    border: none;
-    outline: none;
-    background: none;
-    color: white;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-</style>
+</form>

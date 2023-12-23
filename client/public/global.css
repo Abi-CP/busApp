@@ -5,6 +5,50 @@
   scroll-behavior: smooth;
 }
 
-body{
+body {
   overflow-x: hidden;
+}
+
+.search-box div.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+  width: 300px;
+}
+.search-box input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+  margin: 0;
+}
+.search-box input[type='text'] {
+  background-color: #f1f1f1;
+  width: 100%;
+  height: 64px;
+  border-right: 1px solid black;
+}
+.search-box input[type='submit'] {
+  background-color: DodgerBlue;
+  color: #fff;
+}
+
+.search-box input[type='date'] {
+  width: 200px !important;
+  height: 64px;
+}
+
+.search-box input[type='submit'] {
+  width: 150px !important;
+  height: 64px;
+}  
+
+.search-box #autocomplete-items-list {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  width: 297px;
+  border: 1px solid #ddd;
+  background-color: #ddd;
 }

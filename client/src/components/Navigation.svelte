@@ -1,9 +1,11 @@
 <script>
+  import { Link } from "svelte-routing";
+
   let buslyLogo = "./src/assets/img/busly-logo.png";
 </script>
 
 <div class="nav-bar flex aic jcsb">
-  <img src={buslyLogo} class="clickable" alt="Busly Logo" />
+  <a href="/"><img src={buslyLogo} class="clickable" alt="Busly Logo" /></a>
   <div class="nav-options flex aic">
     <h3 class="premium clickable">Get Premium</h3>
     <div class="account">

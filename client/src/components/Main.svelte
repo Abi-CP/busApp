@@ -17,8 +17,9 @@ import SearchBox from "./SearchBox.svelte";
   fetchRandomLandscapeImage();
 </script>
 
-<div class="container flex aic jcc" style="background-image: {backgroundImage};">
-    <SearchBox/>
+<div class="container" style="background-image: {backgroundImage};">
+  <div class="space"></div>
+    <div class="wrapper  flex jcc"><SearchBox/></div>
 </div>
 
 <style>
@@ -28,5 +29,9 @@ import SearchBox from "./SearchBox.svelte";
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    top: 50%;
+  }
+  .space{
+    height: 35vh;
   }
 </style>
