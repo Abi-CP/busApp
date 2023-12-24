@@ -1,4 +1,4 @@
-// Remove the dotenv import
+// server.mjs
 
 import express from 'express';
 import cors from 'cors';
@@ -6,14 +6,15 @@ import updateBuses from './lib/buses.mjs';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { router as stripeRouter } from './stripe.mjs';
+import 'dotenv/config'; // Configure dotenv
 
-// Remove dotenv.config({ example: false });
+console.log('Process env:', process.env);
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Use express.json()
 
 app.use('/api/stripe', stripeRouter);
 

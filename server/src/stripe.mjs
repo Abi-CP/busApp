@@ -1,12 +1,15 @@
-// server/src/stripe.mjs
+// /stripe.mjs
 
 import { Router } from 'express';
 import Stripe from 'stripe';
 
+console.log('Stripe Secret Key:', process.env.STRIPE_SECRET_KEY);
+
+
 const router = Router();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2020-08-27' });
 console.log('Stripe Secret Key:', process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2020-08-27' });
 
 
 router.post('/create-payment-intent', async (req, res) => {
