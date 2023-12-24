@@ -1,5 +1,6 @@
 <script>
   import { navigate } from "svelte-routing";
+  import PremiumPayment from "../routes/PremiumPayment.svelte";
   let buslyLogo = "./src/assets/img/busly-logo.png";
 
   function gotoAccount() {
@@ -10,7 +11,7 @@
 <div class="nav-bar flex aic jcsb">
   <a href="/"><img src={buslyLogo} class="clickable" alt="Busly Logo" /></a>
   <div class="nav-options flex aic">
-    <h3 class="premium clickable">Get Premium</h3>
+    <PremiumPayment/>
     <div class="account">
       <button class="clickable my-account" on:click={gotoAccount}>My Account</button>
     </div>
@@ -40,11 +41,5 @@
     width: auto;
   }
 
-  .premium {
-    border: 1px solid black;
-    background-color: #3f007a;
-    color: white;
-    padding: 0.2rem 1rem;
-    margin: 0 5rem;
-  }
+
 </style>
