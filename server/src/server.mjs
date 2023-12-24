@@ -11,8 +11,8 @@ app.use(json())
 let source = ''
 let destination = '' // Declare the variables
 
-app.post('/api/search', async (req, res) => {
-  const { source: reqSource, destination: reqDestination, date } = req.body
+app.get('/api/search', async (req, res) => {
+  const { source: reqSource, destination: reqDestination, date: reqDate } = req.query
   source = reqSource // Assign values
   destination = reqDestination // Assign values
 
@@ -23,6 +23,7 @@ app.post('/api/search', async (req, res) => {
     const response = {
       source: source,
       destination: destination,
+      date: reqDate, // Fix the date variable
       buses: updatedBuses,
     }
 

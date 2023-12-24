@@ -1,7 +1,18 @@
 <script>
+  import { getAuth, onAuthStateChanged } from 'firebase/auth';
+  import { navigate } from 'svelte-routing';
+  import { writable } from 'svelte/store';
+
   export let bus;
   export let source;
   export let destination;
+
+  const auth = getAuth();
+  const user = writable(null);
+
+  onAuthStateChanged(auth, (authUser) => {
+    user.set(authUser);
+  });
 
   function convertTime(minutes) {
     const hours = Math.floor(minutes / 60);
@@ -22,6 +33,17 @@
     }
     const hours = Math.floor(minutes / 60);
     return `${hours}:${remainingMinutes}`;
+  }
+
+  function handleBookClick() {
+    const currentUser = $user;
+    if (!currentUser) {
+      alert('Please log in to book a bus.');
+    } else {
+      // Navigate to BookingPage.svelte with the bus ID
+      console.log(bus.busId)
+      navigate(`/booking/${bus.busId}`);
+    }
   }
 </script>
 
@@ -45,8 +67,8 @@
       <h4 class="destination-time time">{converHours(bus.destinationTime)}</h4>
     </div>
     <div class="booking">
-      <h2 class="fare">${bus.totalFare}</h2>
-      <button type="button" class="book-btn">BOOK</button>
+      <h2 class="fare">₹{bus.totalFare}</h2>
+      <button type="button" class="book-btn" on:click={handleBookClick}>BOOK</button>
     </div>
   </div>
 </div>

@@ -1,5 +1,3 @@
-<!-- SearchBox.svelte -->
-
 <script>
   import { navigate } from "svelte-routing";
   import SourceInput from "./SourceInput.svelte";
@@ -13,21 +11,10 @@
 
   const submitValue = async () => {
     if (sourceInputValue && destinationInputValue) {
-      const apiUrl = "http://localhost:3001/api/search";
-      const requestData = {
-        source: sourceInputValue,
-        destination: destinationInputValue,
-        date: dateInput,
-      };
+      const apiUrl = `http://localhost:3001/api/search?source=${sourceInputValue}&destination=${destinationInputValue}&date=${dateInput}`;
 
       try {
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-        });
+        const response = await fetch(apiUrl);
 
         if (response.ok) {
           const data = await response.json();

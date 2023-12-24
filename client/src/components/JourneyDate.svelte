@@ -15,8 +15,10 @@
     let todayDate = new Date(today);
     let nextThreeMonthsDate = new Date(nextThreeMonthsRange);
 
+    
     // Check if the target date is within the range
     if (targetDate >= todayDate && targetDate <= nextThreeMonthsDate) {
+      console.log(todayDate)
       console.log("The target date is within the range.");
     } else {
       console.log("The target date is outside the range.");

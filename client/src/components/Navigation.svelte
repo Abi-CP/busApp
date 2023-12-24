@@ -1,7 +1,10 @@
 <script>
-  import { Link } from "svelte-routing";
-
+  import { navigate } from "svelte-routing";
   let buslyLogo = "./src/assets/img/busly-logo.png";
+
+  function gotoAccount() {
+    navigate("/account");
+  }
 </script>
 
 <div class="nav-bar flex aic jcsb">
@@ -9,7 +12,7 @@
   <div class="nav-options flex aic">
     <h3 class="premium clickable">Get Premium</h3>
     <div class="account">
-      <h3>My Account</h3>
+      <button class="clickable my-account" on:click={gotoAccount}>My Account</button>
     </div>
   </div>
 </div>
@@ -18,11 +21,11 @@
   .nav-bar {
     height: 10vh;
     width: 100vw;
+    z-index: 999;
     background-color: whitesmoke;
-    /* color: white; */
     position: relative;
     padding: 2vh 10vw;
-    border: 1px solid #eee; /* JUST TO LOOK COOL */
+    border: 1px solid #eee;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px;
   }
 
