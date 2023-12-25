@@ -17,8 +17,12 @@
   },
   "dependencies": {
     "@rollup/plugin-replace": "^5.0.5",
+    "@stripe/stripe-js": "^2.2.2",
     "axios": "^1.6.2",
+    "esm": "^3.2.25",
     "firebase": "^10.7.1",
+    "firebase-admin": "^12.0.0",
+    "stripe": "^14.10.0",
     "svelte-autocomplete": "^0.0.4",
     "svelte-kit": "^1.2.0"
   }

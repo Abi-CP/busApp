@@ -6,15 +6,16 @@ import updateBuses from './lib/buses.mjs';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { router as stripeRouter } from './stripe.mjs';
-import 'dotenv/config'; // Configure dotenv
+import Stripe from 'stripe'; // Import Stripe class
 
-console.log('Process env:', process.env);
+const stripeSecretKey = 'sk_test_51OQqOjSEuj1HRmQXbOGow0OlEtiGSIVIYYQOjQlZ6EqBMkp2rRElclRHKMZcW31YUYJx1sLnOGiX2rpSvepx51ZS00X8gXNPgv';
+const stripe = new Stripe(stripeSecretKey, { apiVersion: '2020-08-27' });
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
-app.use(express.json()); // Use express.json()
+app.use(express.json());
 
 app.use('/api/stripe', stripeRouter);
 
@@ -27,21 +28,20 @@ const io = new Server(server, {
 });
 
 let source = '';
-let destination = ''; // Declare the variables
+let destination = '';
 
 app.get('/api/search', async (req, res) => {
   const { source: reqSource, destination: reqDestination, date: reqDate } = req.query;
-  source = reqSource; // Assign values
-  destination = reqDestination; // Assign values
+  source = reqSource;
+  destination = reqDestination;
 
   try {
-    // Call the function to update buses
     const updatedBuses = await updateBuses(source, destination);
 
     const response = {
       source: source,
       destination: destination,
-      date: reqDate, // Fix the date variable
+      date: reqDate,
       buses: updatedBuses,
     };
 
