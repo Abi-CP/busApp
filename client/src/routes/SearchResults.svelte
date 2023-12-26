@@ -45,7 +45,7 @@
 
 <style>
     .search-results.container {
-    margin: 2vh 0 3vh 5vw;
+    margin: 2vh 5vh 3vh 5vw;
     padding-top: 15vh;
   }
 
