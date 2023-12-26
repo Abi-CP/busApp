@@ -80,7 +80,7 @@
 
 <style>
   .card-container {
-    height: max-content;
+    height: 20vh;
     background-color: #f9f9f9;
     border: 1px solid smokewhite;
     border-radius: 25px;
