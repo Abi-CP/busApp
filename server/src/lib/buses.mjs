@@ -1,4 +1,4 @@
-import { findDistanceAndTime } from '../geolib/graph.mjs';
+import { findDistanceAndTime } from '../geolib/graph.mjs'
 
 // Example bus data
 let buses = [
@@ -9,6 +9,9 @@ let buses = [
     destinationTime: 0,
     baseFare: 250,
     totalFare: 0,
+    journeyDate: undefined,
+    source: undefined,
+    destination: undefined,
   },
   {
     busId: 2,
@@ -17,6 +20,9 @@ let buses = [
     destinationTime: 0,
     baseFare: 100,
     totalFare: 0,
+    journeyDate: undefined,
+    source: undefined,
+    destination: undefined,
   },
   {
     busId: 3,
@@ -25,6 +31,9 @@ let buses = [
     destinationTime: 0,
     baseFare: 150,
     totalFare: 0,
+    journeyDate: undefined,
+    source: undefined,
+    destination: undefined,
   },
   {
     busId: 4,
@@ -33,6 +42,9 @@ let buses = [
     destinationTime: 0,
     baseFare: 300,
     totalFare: 0,
+    journeyDate: undefined,
+    source: undefined,
+    destination: undefined,
   },
   {
     busId: 5,
@@ -41,38 +53,46 @@ let buses = [
     destinationTime: 0,
     baseFare: 200,
     totalFare: 0,
+    journeyDate: undefined,
+    source: undefined,
+    destination: undefined,
   },
 ]
 // Export an asynchronous function to update buses
-export default async function updateBuses(source, destination) {
+export default async function updateBuses(source, destination, premium, date) {
   return new Promise((resolve, reject) => {
     try {
       buses.forEach((bus) => {
-        const [distance, journeyTime] = findDistanceAndTime(source, destination, bus.sourceTime);
+        const [distance, journeyTime] = findDistanceAndTime(source, destination, bus.sourceTime)
 
-        bus.distance = distance;
-        bus.journeyTime = journeyTime;
+        bus.distance = distance
+        bus.journeyTime = journeyTime
+        bus.journeyDate = date
 
         if (source !== null) {
           // Update bus details
-          bus.journeyTime = journeyTime;
+          bus.source = source
+          bus.destination = destination
+          bus.journeyTime = journeyTime
+
           // bus.sourceTime = sourceTime
-          bus.destinationTime = parseFloat((bus.sourceTime + journeyTime).toFixed(0));
-          bus.totalFare = parseFloat(calculateFare(bus.baseFare, distance).toFixed(2));
+          bus.destinationTime = parseFloat((bus.sourceTime + journeyTime).toFixed(0))
+          bus.totalFare = parseFloat(calculateFare(bus.baseFare, distance, premium).toFixed(2))
+          console.log(bus)
         }
-      });
+      })
 
-      console.log(buses);
-      resolve(buses);
+      resolve(buses)
     } catch (error) {
-      console.error('Error updating buses:', error);
-      reject(error);
+      console.error('Error updating buses:', error)
+      reject(error)
     }
-  });
+  })
 }
 
-function calculateFare(baseFare, distance) {
-  return baseFare + ((50 * distance) / 100);
+function calculateFare(baseFare, distance, premium) {
+  if (premium) {
+    return baseFare + (30 * distance) / 100
+  }
+  return baseFare + (50 * distance) / 100
 }
-
-

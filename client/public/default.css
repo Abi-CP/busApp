@@ -35,6 +35,9 @@
 .jcsa{
   justify-content: space-around ;
 }
+.jcs{
+  justify-content: start;
+}
 .aic {
   align-items: center;
 }

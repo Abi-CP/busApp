@@ -7,13 +7,15 @@
   import Register from "./routes/Register.svelte";
   import Account from "./routes/Account.svelte";
   import BookingPage from "./routes/BookingPage.svelte";
+  import MyBookings from "./routes/MyBookings.svelte";
 </script>
 
 <Router>
   <Route path="/" component={Home} />
   <Route path="/search-results" component={SearchResults} />
-  <Route path="/login" component={Login}/>
-  <Route path="/register" component={Register}/>
-  <Route path="/account" component={Account}/>
-  <Route path="/booking-page" component={BookingPage}/>
+  <Route path="/login" component={Login} />
+  <Route path="/register" component={Register} />
+  <Route path="/account" component={Account} />
+  <Route path="/booking-page" component={BookingPage} />
+  <Route path="/my-bookings" component={MyBookings} />
 </Router>

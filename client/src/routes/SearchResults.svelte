@@ -1,11 +1,13 @@
 <script>
+
+
   import Navigation from "../components/Navigation.svelte";
   import { onMount } from "svelte";
   import { searchData } from "../js/stores";
   import SearchResultCard from "../components/SearchResultCard.svelte";
 
   let searchResults = [], source, destination;
-
+  
   onMount(() => {
     // Subscribe to changes in the store when the component mounts
     const unsubscribe = searchData.subscribe((value) => {
@@ -29,9 +31,7 @@
 <div class="search-results container">
   <Navigation />
   <h1>Search Result</h1>
-</div>
-
-{#if searchResults.length > 0}
+  {#if searchResults.length > 0}
   <!-- Render your results -->
   {#each searchResults as bus (bus.busId)}
     <SearchResultCard {bus} {source} {destination} />
@@ -40,8 +40,13 @@
   <p>No results found.</p>
 {/if}
 
+</div>
+
+
 <style>
-  .search-results.container {
-    padding-top: 10vh;
+    .search-results.container {
+    margin: 2vh 0 3vh 5vw;
+    padding-top: 15vh;
   }
+
 </style>

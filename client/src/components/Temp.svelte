@@ -1,125 +1,119 @@
 <script>
-    // @ts-nocheck
-  
-    import { districts } from "../js/districtNames";
-  
-    function setNextFocus(event) {
-      const inputs = document.querySelectorAll(".input-field");
-      const currentField = event.target;
-      const currentIndex = Array.from(inputs).indexOf(currentField);
-  
-      if (
-        event.key === "Enter" &&
-        currentIndex !== -1 &&
-        currentIndex < inputs.length - 1
-      ) {
-        inputs[currentIndex + 1].focus();
-      }
-    }
-  
+  import { onMount } from 'svelte';
+  // import { useParams } from 'svelte-routing';
+  import { searchData } from '../js/stores';
 
-    function handleSearchClick() {
-      const sourceValue = document.getElementById("source").value;
-      const destinationValue = document.getElementById("destination").value;
-      const dateValue = document.getElementById("date").value;
-  
-      verifyDate(dateValue);
-  
-      console.log("From:", sourceValue);
-      console.log("To:", destinationValue);
-      console.log("Date:", dateValue);
-    }
-  </script>
-  
-  <div class="search-box flex">
-    <div class="input-container flex">
-      <label for="source" class="input-label">From</label>
-      <input
-        type="text"
-        id="source"
-        class="input-field"
-        placeholder="Enter source location"
-        required
-        on:keydown={setNextFocus}
-      />
-    </div>
-  
-    <div class="input-container flex">
-      <label for="destination" class="input-label">To</label>
-      <input
-        type="text"
-        id="destination"
-        class="input-field"
-        placeholder="Enter destination location"
-        required
-        on:keydown={setNextFocus}
-      />
-    </div>
+// Fetch bus details based on the route parameter (bus ID)
+//   let { id } = useParams();
+let busDetails = {}; // Fetch bus details using busId from your data source
 
-  
-    <div class="input-container search clickable">
-      <button type="button" on:click={handleSearchClick}>Search</button>
-    </div>
-  </div>
-  
-  <style>
-    .search-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 70vw;
-      height: 10vh;
-      border: 1px solid #eee;
-      border-radius: 25px;
-      box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px;
-      background-color: whitesmoke;
-    }
-  
-    .input-container {
-      flex: 1;
-      padding: 0 10px;
-    }
-  
-    .input-label {
-      display: inline;
-      padding: 0 1rem;
-      margin-bottom: 5px;
-      font-size: 1rem;
-      color: #333;
-    }
-  
-    .input-field {
-      height: 100%;
-      width: 100%;
-      font-size: 1rem;
-      border: none;
-      outline: none;
-      background: none;
-    }
-  
-    .search {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      width: 10vw;
-      padding: 0 15px;
-      border: none;
-      outline: none;
-      background-color: #4caf50;
-      cursor: pointer;
-      border-radius: 0 25px 25px 0;
-    }
-  
-    .search button {
-      height: 100%;
-      width: 100%;
-      border: none;
-      outline: none;
-      background: none;
-      color: white;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-  </style>
-  
+// Form state
+let numberOfTickets = 1;
+let selectedPaymentOption = 'credit_card';
+
+  onMount(() => {
+    // Fetch bus details from your data source based on busId
+    // For example, you might have an API call or use a store to get bus details
+    // busDetails = fetchBusDetails(busId); // Implement this based on your data fetching logic
+  });
+
+  function handleBookNow() {
+    // Implement your logic for booking the tickets
+    // This can include making an API call, updating the database, etc.
+    console.log('Booking details:', {
+      busDetails,
+      numberOfTickets,
+      selectedPaymentOption,
+    });
+    alert('Booking Successful!'); // Replace this with your actual booking logic
+  }
+</script>
+
+<div class="booking-container">
+  <h2>Bus Details</h2>
+  <p>Bus Name: {busDetails.companyName}</p>
+  <p>Source: {busDetails.source}</p>
+  <p>Destination: {busDetails.destination}</p>
+
+  <h2>Booking Information</h2>
+  <label for="tickets">Number of Tickets:</label>
+  <input type="number" id="tickets" bind:value={numberOfTickets} min="1" />
+
+  <label for="payment">Payment Option:</label>
+  <select id="payment" bind:value={selectedPaymentOption}>
+    <option value="credit_card">Credit Card</option>
+    <option value="debit_card">Debit Card</option>
+    <option value="upi">UPI</option>
+  </select>
+
+  <button on:click={handleBookNow}>Book Now</button>
+</div>
+
+<style>
+  .booking-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+
+  h2 {
+    margin-top: 10px;
+  }
+
+  label {
+    margin-top: 10px;
+    display: block;
+  }
+
+  input,
+  select,
+  button {
+    margin-top: 5px;
+  }
+
+  button {
+    padding: 10px;
+    background-color: #4285f4;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #3c78d8;
+  }
+
+  button:active {
+    background-color: #356fce;
+  }
+</style>
+
+
+
+
+<script>
+  import { getContext, onMount } from "svelte";
+
+  let busDetails = getContext("busToBook");
+  // onMount(()=>{
+  // })
+  let numberOfTickets = 1;
+  let selectedPaymentOption = "credit_card";
+
+  function handleBookNow() {
+    // Implement your logic for booking the tickets
+    // This can include making an API call, updating the database, etc.
+    console.log("Booking details:", {
+      busDetails,
+      numberOfTickets,
+      selectedPaymentOption,
+    });
+    alert("Booking Successful!"); // Replace this with your actual booking logic
+  }
+</script>

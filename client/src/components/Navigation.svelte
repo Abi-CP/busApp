@@ -41,5 +41,12 @@
     width: auto;
   }
 
+  .my-account {
+    border: 1px solid black;
+    background-color: white;
+    color: #3f007a;
+    padding: 0.2rem 1rem;
+    margin: 0 5rem;
+  }
 
 </style>

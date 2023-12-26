@@ -4,14 +4,58 @@
   import DestinationInput from "./DestinationInput.svelte";
   import JourneyDate from "./JourneyDate.svelte";
   import { searchData } from "../js/stores";
+  import { app, firebaseFirestore } from "../firebaseConfig";
+  import { doc, getDoc } from "firebase/firestore";
+  import { getAuth, onAuthStateChanged } from "firebase/auth";
+  import { onMount } from "svelte";
 
   let sourceInputValue = "";
   let destinationInputValue = "";
-  let dateInput = new Date().toISOString().split('T')[0];
+  let dateInput = new Date().toISOString().split("T")[0];
+  let user = null;
+  let userId = "";
+  const auth = getAuth(app);
+  let isPremium = false
+
+  onMount(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+      if (!authUser) {
+        navigate("/login");
+        return;
+      }
+
+      user = authUser;
+      if (user) {
+        userId = user.uid;
+        isPremium = await checkPremiumStatus(userId);
+      }
+    });
+
+    return unsubscribe;
+  });
+
+  async function checkPremiumStatus(userId) {
+    if (!userId || !firebaseFirestore) {
+      console.log("User or premium err");
+      return false;
+    }
+
+    const docRef = doc(firebaseFirestore, "premiumUsers", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Premium OK! Document data:", docSnap.data());
+      return true;
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+      return false;
+    }
+  }
 
   const submitValue = async () => {
     if (sourceInputValue && destinationInputValue) {
-      const apiUrl = `http://localhost:3001/api/search?source=${sourceInputValue}&destination=${destinationInputValue}&date=${dateInput}`;
+      const apiUrl = `http://localhost:3001/api/search?source=${sourceInputValue}&destination=${destinationInputValue}&date=${dateInput}&premium=${isPremium}`;
 
       try {
         const response = await fetch(apiUrl);
