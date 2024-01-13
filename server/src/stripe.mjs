@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 
 const router = Router();
 
-const stripeSecretKey = 'sk_test_51OQqOjSEuj1HRmQXbOGow0OlEtiGSIVIYYQOjQlZ6EqBMkp2rRElclRHKMZcW31YUYJx1sLnOGiX2rpSvepx51ZS00X8gXNPgv'; 
+const stripeSecretKey = 'ENTER YOUR SECRET KEY HERE'; 
 const stripe = new Stripe(stripeSecretKey, { apiVersion: '2020-08-27' });
 
 // Function to create a new customer on Stripe and return the customer ID
