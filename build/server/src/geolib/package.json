@@ -1,0 +1,8 @@
+{
+    "name":  "graph.js",
+    "type": "module",
+    "dependencies": {
+      "geolib": "^3.3.4" 
+    }
+  }
+  

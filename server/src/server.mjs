@@ -12,7 +12,7 @@ const stripeSecretKey = 'sk_test_51OQqOjSEuj1HRmQXbOGow0OlEtiGSIVIYYQOjQlZ6EqBMk
 const stripe = new Stripe(stripeSecretKey, { apiVersion: '2020-08-27' })
 
 const app = express()
-const port = 3001
+const port = 3000
 
 app.use(cors())
 app.use(express.json())

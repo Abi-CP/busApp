@@ -5,8 +5,8 @@
   import {busToBook} from '../js/stores'
 
   export let bus;
-  export let source;
-  export let destination;
+  // export let source;
+  // export let destination;
   // export let busToBook;
 
   const auth = getAuth();
